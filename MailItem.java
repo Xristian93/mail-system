@@ -15,6 +15,7 @@ public class MailItem
     private String message;
     // The text of the subject.
     private String subject;
+    private boolean encryptedMessage;
 
     /**
      * Create a mail item from sender to the given recipient,
@@ -23,12 +24,13 @@ public class MailItem
      * @param to The intended recipient of this item.
      * @param message The text of the message to be sent.
      */
-    public MailItem(String from, String to, String subject, String message)
+    public MailItem(String from, String to, String subject, String message, boolean encryptedMessage)
     {
         this.from = from;
         this.to = to;
         this.subject = subject;
         this.message = message;
+        this.encryptedMessage = encryptedMessage;
     }
 
     /**
@@ -37,6 +39,22 @@ public class MailItem
     public String getFrom()
     {
         return from;
+    }
+
+    /**
+     * @return The bollean of this message.
+     */
+    public boolean getBoolean()
+    {
+        return encryptedMessage;
+    }
+
+    /**
+     * @return The subject of this message.
+     */
+    public String getSubject()
+    {
+        return subject;
     }
 
     /**
@@ -62,7 +80,7 @@ public class MailItem
     {
         System.out.println("From: " + from);
         System.out.println("To: " + to);
-        System.out.println("Message: " + message);
         System.out.println("Subject: " + subject);
+        System.out.println("Message: " + message);
     }
 }

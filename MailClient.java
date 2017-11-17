@@ -11,7 +11,7 @@ public class MailClient
     private MailServer server;
     // The user running this client.
     private String user;
-
+    private boolean encrypted;
     /**
      * Create a mail client run by user and attached to the given server.
      */
@@ -39,7 +39,14 @@ public class MailClient
         if(item == null) {
             System.out.println("No new mail.");
         }
-        else {
+        else if (item.getBoolean() == true) {
+            String message = "" + item.getMessage().replace("?\\", "a").replace("(\\", "e").replace(")\\", "i").replace("{\\", "o").replace("}\\", "u");
+            boolean encryptedMessage = true;
+            item = new MailItem(user, item.getTo(), item.getSubject(), message, encryptedMessage);
+            server.post(item);
+            item.print();
+        }
+        else if (item.getBoolean() == false){
             item.print();
         }
     }
@@ -52,7 +59,23 @@ public class MailClient
      */
     public void sendMailItem(String to, String subject, String message)
     {
-        MailItem item = new MailItem(user, to, subject, message);
+        boolean encryptedMessage2 = false;
+        MailItem item = new MailItem(user, to, subject, message, encryptedMessage2);
         server.post(item);
+    }
+
+    /**
+     * Send the given message to the given recipient via
+     * the attached mail server.
+     * @param to The intended recipient.
+     * @param message The text of the message to be sent.
+     */
+    public void sendEncryptedMailItem(String to, String subject, String message)
+    {
+        boolean encryptedMessage2 = true;
+        String message2 = "?=?" + message.replace("a", "?\\").replace("e", "(\\").replace("i", ")\\").replace("o", "{\\").replace("u", "}\\");
+        MailItem item = new MailItem(user, to, subject, message2, encryptedMessage2);
+        server.post(item);
+        encrypted = item.getBoolean();
     }
 }
